@@ -29,7 +29,12 @@ public class AddMedicineActivity extends AppCompatActivity {
     private TextView tvReminderTime;
     private int reminderHour=-1;
     private int reminderMinute=-1;
-
+    //新增：处理屏幕旋转时的时间清除
+    protected  void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt("reminder_hour", reminderHour);
+        outState.putInt("reminder_minute", reminderMinute);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +74,15 @@ public class AddMedicineActivity extends AppCompatActivity {
         // 点击按钮时，检查并展示输入。
         btnCheck.setOnClickListener(v -> checkMedicineInfo());
         btnChooseTime.setOnClickListener(v->showTimePicker());
+        //新增，解决旋转的问题
+        if (savedInstanceState != null) {
+            reminderHour = savedInstanceState.getInt("reminder_hour", -1);
+            reminderMinute = savedInstanceState.getInt("reminder_minute", -1);
+
+            if (reminderHour >= 0 && reminderMinute >= 0) {
+                updateTimeText();
+            }
+        }
     }
 
     private void checkMedicineInfo() {
@@ -112,6 +126,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         boolean repeatDaily = cbDaily.isChecked();
         String repeatText = repeatDaily ? "每天重复" : "不重复";
+
         String time = String.format(
                 Locale.getDefault(),
                 "%02d:%02d",
@@ -124,7 +139,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 + "每次用量：" + dose + "\n"
                 + "服用备注：" + meal + "\n"
                 + "重复方式：" + time + "\n"
-                + "提醒重复：" + repeatText + "\n\n"
+                + "提醒重复：" + repeatText + "\n"
                 + "当前仅预览，尚未保存或设置提醒。";
 
         tvPreview.setText(preview);
@@ -166,4 +181,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         tvReminderTime.setText("提醒时间：" + time);
     }
-    }
+
+
+
+}
