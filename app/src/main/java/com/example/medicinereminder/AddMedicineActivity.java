@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.app.TimePickerDialog;
+import android.app.TimePickerDialog;//安卓提供的时间选择对话框
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -62,11 +62,13 @@ public class AddMedicineActivity extends AppCompatActivity {
         rgMeal = findViewById(R.id.rgMeal);
         cbDaily = findViewById(R.id.cbDaily);
         tvPreview = findViewById(R.id.tvPreview);
-
+        tvReminderTime=findViewById(R.id.tvReminderTime);
+        Button btnChooseTime=findViewById(R.id.btnChooseTime);
         Button btnCheck = findViewById(R.id.btnCheck);
 
         // 点击按钮时，检查并展示输入。
         btnCheck.setOnClickListener(v -> checkMedicineInfo());
+        btnChooseTime.setOnClickListener(v->showTimePicker());
     }
 
     private void checkMedicineInfo() {
@@ -98,21 +100,70 @@ public class AddMedicineActivity extends AppCompatActivity {
             ).show();
             return;
         }
+        if(reminderHour==-1||reminderMinute==-1){
+            Toast.makeText(
+                    this,"请选择提醒时间",Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
 
         RadioButton selectedButton = findViewById(checkedId);
         String meal = selectedButton.getText().toString();
 
         boolean repeatDaily = cbDaily.isChecked();
         String repeatText = repeatDaily ? "每天重复" : "不重复";
+        String time = String.format(
+                Locale.getDefault(),
+                "%02d:%02d",
+                reminderHour,
+                reminderMinute
+        );
 
         String preview = "请核对以下信息：\n\n"
                 + "药品名称：" + name + "\n"
                 + "每次用量：" + dose + "\n"
                 + "服用备注：" + meal + "\n"
+                + "重复方式：" + time + "\n"
                 + "提醒重复：" + repeatText + "\n\n"
                 + "当前仅预览，尚未保存或设置提醒。";
 
         tvPreview.setText(preview);
         tvPreview.setVisibility(View.VISIBLE);
     }
-}
+    private  void showTimePicker(){
+        Calendar now = Calendar.getInstance();
+        int initialHour = reminderHour >= 0
+                ? reminderHour
+                : now.get(Calendar.HOUR_OF_DAY);
+        int initialMinute = reminderMinute >= 0
+                ? reminderMinute
+                : now.get(Calendar.MINUTE);
+        TimePickerDialog dialog = new TimePickerDialog(
+                this,
+                (timePicker, hourOfDay, minute) -> {
+                    reminderHour = hourOfDay;
+                    reminderMinute = minute;
+
+                    updateTimeText();
+
+                    // 时间发生改变，隐藏旧预览，等待重新检查。
+                    tvPreview.setVisibility(View.GONE);
+                },
+                initialHour,
+                initialMinute,
+                true
+        );
+        dialog.show();
+    }
+
+    private void updateTimeText() {
+        String time = String.format(
+                Locale.getDefault(),
+                "%02d:%02d",
+                reminderHour,
+                reminderMinute
+        );
+
+        tvReminderTime.setText("提醒时间：" + time);
+    }
+    }
