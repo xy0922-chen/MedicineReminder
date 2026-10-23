@@ -157,6 +157,15 @@
             android:textSize="22sp"
             android:textColor="#202124"
             android:visibility="gone" />
+        <Button
+            android:id="@+id/btnSaveMedicine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:layout_marginTop="20dp"
+            android:text="保存用药计划"
+            android:textSize="22sp"
+            />
 
     </LinearLayout>
 </ScrollView>
