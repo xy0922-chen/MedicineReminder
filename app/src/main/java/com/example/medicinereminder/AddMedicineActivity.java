@@ -15,7 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.app.TimePickerDialog;//安卓提供的时间选择对话框
-
+import android.content.Intent;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -70,7 +70,34 @@ public class AddMedicineActivity extends AppCompatActivity {
         tvReminderTime=findViewById(R.id.tvReminderTime);
         Button btnChooseTime=findViewById(R.id.btnChooseTime);
         Button btnCheck = findViewById(R.id.btnCheck);
+        Button btnSaveMedicine = findViewById(R.id.btnSaveMedicine);
 
+        btnSaveMedicine.setOnClickListener(v -> {
+            // 检查没有通过，就结束本次点击处理。
+            if (!checkMedicineInfo()) {
+                return;
+            }
+
+            String name = etMedicineName.getText().toString().trim();
+            String dose = etDose.getText().toString().trim();
+
+            int checkedId = rgMeal.getCheckedRadioButtonId();
+            RadioButton selectedButton = findViewById(checkedId);
+            String meal = selectedButton.getText().toString();
+
+            Intent data = new Intent();
+
+            data.putExtra("name", name);
+            data.putExtra("dose", dose);
+            data.putExtra("meal", meal);
+            data.putExtra("hour", reminderHour);
+            data.putExtra("minute", reminderMinute);
+            data.putExtra("repeat_daily", cbDaily.isChecked());
+
+            setResult(RESULT_OK, data);//设置返回结果：操作成功，并附带这些数据。
+
+            finish();//关闭添加页面，回到首页
+        });
         // 点击按钮时，检查并展示输入。
         btnCheck.setOnClickListener(v -> checkMedicineInfo());
         btnChooseTime.setOnClickListener(v->showTimePicker());
@@ -85,7 +112,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
     }
 
-    private void checkMedicineInfo() {
+    private boolean checkMedicineInfo() {
         // 先清除上一次的预览，避免显示旧内容。
         tvPreview.setVisibility(View.GONE);
 
@@ -95,13 +122,13 @@ public class AddMedicineActivity extends AppCompatActivity {
         if (name.isEmpty()) {
             etMedicineName.setError("请输入药品名称");
             etMedicineName.requestFocus();
-            return;
+            return false;
         }
 
         if (dose.isEmpty()) {
             etDose.setError("请输入每次用量和单位");
             etDose.requestFocus();
-            return;
+            return false;
         }
 
         int checkedId = rgMeal.getCheckedRadioButtonId();
@@ -112,13 +139,13 @@ public class AddMedicineActivity extends AppCompatActivity {
                     "请选择服用备注",
                     Toast.LENGTH_SHORT
             ).show();
-            return;
+            return false;
         }
         if(reminderHour==-1||reminderMinute==-1){
             Toast.makeText(
                     this,"请选择提醒时间",Toast.LENGTH_SHORT
             ).show();
-            return;
+            return false;
         }
 
         RadioButton selectedButton = findViewById(checkedId);
@@ -144,6 +171,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         tvPreview.setText(preview);
         tvPreview.setVisibility(View.VISIBLE);
+        return true;
     }
     private  void showTimePicker(){
         Calendar now = Calendar.getInstance();
