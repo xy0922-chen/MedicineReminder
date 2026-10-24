@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class MedicineDbHelper extends SQLiteOpenHelper {
 
@@ -68,4 +72,60 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
 
         return db.insert(TABLE_MEDICINE, null, values);
     }
+ //新增查询方法
+ public ArrayList<String> getAllMedicines(){
+        ArrayList<String> list=new ArrayList<>();
+        SQLiteDatabase db=getReadableDatabase();
+
+        //Cursor（游标）是 SQLite 查询结果的数据集容器，相当于一张结果表格，用来存放 db.query () 查出来的多行数据。
+         Cursor cursor = db.query(
+                 TABLE_MEDICINE,
+                 new String[]{
+                         "name",
+                         "dose",
+                         "meal",
+                         "hour",
+                         "minute",
+                         "repeat_daily"
+                 },
+                 null,
+                 null,
+                 null,
+                 null,
+                 "_id ASC"
+         );
+     try {
+         while (cursor.moveToNext()) {
+             String name = cursor.getString(0);
+             String dose = cursor.getString(1);
+             String meal = cursor.getString(2);
+
+             int hour = cursor.getInt(3);
+             int minute = cursor.getInt(4);
+             boolean repeatDaily = cursor.getInt(5) == 1;
+
+             String time = String.format(
+                     Locale.getDefault(),
+                     "%02d:%02d",
+                     hour,
+                     minute
+             );
+
+             String repeatText = repeatDaily ? "每天重复" : "仅一次";
+
+             String medicineInfo =
+                     "药品名称：" + name + "\n"
+                             + "每次用量：" + dose + "\n"
+                             + "服用备注：" + meal + "\n"
+                             + "提醒时间：" + time + "\n"
+                             + "重复方式：" + repeatText;
+
+             list.add(medicineInfo);
+         }
+     } finally {
+         cursor.close();
+     }
+
+     return list;
+ }
 }
