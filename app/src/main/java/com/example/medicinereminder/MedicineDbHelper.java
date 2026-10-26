@@ -8,11 +8,14 @@ import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MedicineDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "medicine.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_MEDICINE = "medicine";
 
@@ -35,8 +38,11 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                 + "meal TEXT NOT NULL, "
                 + "hour INTEGER NOT NULL, "
                 + "minute INTEGER NOT NULL, "
-                + "repeat_daily INTEGER NOT NULL DEFAULT 0"
+                + "repeat_daily INTEGER NOT NULL DEFAULT 0, "
+                + "last_taken_at INTEGER NOT NULL DEFAULT 0"
                 + ")";
+        //新增last_taken_at = 0           尚未记录
+        //last_taken_at = 某个时间值   最近一次记录的时间
 
         db.execSQL(sql);
     }
@@ -47,8 +53,13 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
             int oldVersion,
             int newVersion
     ) {
-        // 当前只有版本 1。
-        // 以后修改表结构并提高版本号时，在这里编写迁移代码。
+        if (oldVersion < 2) {
+            db.execSQL(
+                    "ALTER TABLE " + TABLE_MEDICINE
+                            + " ADD COLUMN last_taken_at"
+                            + " INTEGER NOT NULL DEFAULT 0"
+            );
+        }
     }
 
     //增操作
@@ -88,7 +99,8 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                      "meal",
                      "hour",
                      "minute",
-                     "repeat_daily"
+                     "repeat_daily",
+                     "last_taken_at"
              },
              null,
              null,
@@ -127,6 +139,12 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                      cursor.getColumnIndexOrThrow("repeat_daily")
              ) == 1;
 
+             long lastTakenAt = cursor.getLong(
+                     cursor.getColumnIndexOrThrow("last_taken_at")
+             );
+
+             String takenStatus = getTakenStatus(lastTakenAt);
+
              String time = String.format(
                      Locale.getDefault(),
                      "%02d:%02d",
@@ -140,7 +158,8 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                              + "服用备注：" + meal + "\n"
                              + "提醒时间：" + time + "\n"
                              + "重复方式："
-                             + (repeatDaily ? "每天重复" : "仅一次");
+                             + (repeatDaily ? "每天重复" : "仅一次")
+                             + "\n服药状态：" + takenStatus;
 
              // 同一条记录的编号和文字，必须一起加入。
              ids.add(medicineId);
@@ -204,4 +223,63 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)}
         );
     }
+    // 判断某个记录时间是否属于手机当前日期。
+    public static boolean isTakenToday(long timestamp) {
+        if (timestamp <= 0) {
+            return false;
+        }
+
+        Calendar recorded = Calendar.getInstance();
+        recorded.setTimeInMillis(timestamp);
+
+        Calendar today = Calendar.getInstance();
+
+        return recorded.get(Calendar.ERA) == today.get(Calendar.ERA)
+                && recorded.get(Calendar.YEAR)
+                == today.get(Calendar.YEAR)
+                && recorded.get(Calendar.DAY_OF_YEAR)
+                == today.get(Calendar.DAY_OF_YEAR);
+    }
+
+    // 生成首页和详情页都能使用的状态文字。
+    public static String getTakenStatus(long timestamp) {
+        if (!isTakenToday(timestamp)) {
+            return "今日未记录";
+        }
+
+        String time = new SimpleDateFormat(
+                "HH:mm",
+                Locale.getDefault()
+        ).format(new Date(timestamp));
+
+        return "今日已服药，记录时间 " + time;
+    }
+    public int markMedicineTaken(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("last_taken_at", System.currentTimeMillis());
+//System.currentTimeMillis()获取当前时间的毫秒值。
+        return db.update(
+                TABLE_MEDICINE,
+                values,
+                "_id = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
+
+    public int clearMedicineTaken(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("last_taken_at", 0);
+
+        return db.update(
+                TABLE_MEDICINE,
+                values,
+                "_id = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
+
 }

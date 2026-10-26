@@ -25,7 +25,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
     private Button btnDeleteMedicine;
 
     private MedicineDbHelper dbHelper;
-    private long medicineId;
+    private long medicineId=-1;
 
     private final ExecutorService databaseExecutor =
             Executors.newSingleThreadExecutor();
@@ -33,6 +33,11 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
     // 装载传给编辑页面的数据。
     private Intent editIntent;
+
+    private TextView tvTakenStatus;
+    private Button btnMarkTaken;
+
+    private long lastTakenAt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +83,33 @@ public class MedicineDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        loadMedicineDetail();
 
+        tvTakenStatus = findViewById(R.id.tvTakenStatus);
+        btnMarkTaken = findViewById(R.id.btnMarkTaken);
+
+        btnMarkTaken.setOnClickListener(v -> {
+            if (MedicineDbHelper.isTakenToday(lastTakenAt)) {
+                new AlertDialog.Builder(this)
+                        .setTitle("撤销今日记录")
+                        .setMessage("确定撤销这条计划的今日服药记录吗？")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton(
+                                "撤销",
+                                (dialog, which) -> changeTakenStatus(true)
+                        )
+                        .show();
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle("记录今日服药")
+                        .setMessage("请确认你已经完成这条计划对应的本次服药。")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton(
+                                "确认已服药",
+                                (dialog, which) -> changeTakenStatus(false)
+                        )
+                        .show();
+            }
+        });
         btnBack.setOnClickListener(v -> finish());
 
         btnDeleteMedicine.setOnClickListener(v -> {
@@ -101,6 +131,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
                 startActivityForResult(editIntent, 200);
             }
         });
+
     }
 
     private void loadMedicineDetail() {
@@ -150,6 +181,10 @@ public class MedicineDetailActivity extends AppCompatActivity {
                         cursor.getColumnIndexOrThrow("repeat_daily")
                 ) == 1;
 
+                long takenTime = cursor.getLong(
+                        cursor.getColumnIndexOrThrow("last_taken_at")
+                );
+
                 String time = String.format(
                         Locale.getDefault(),
                         "%02d:%02d",
@@ -171,6 +206,25 @@ public class MedicineDetailActivity extends AppCompatActivity {
                     }//判断当前 Activity 是不是快要关闭 / 已经销毁了
 
                     tvMedicineDetail.setText(detail);
+                    //已有的修改按钮、删除按钮更新代码继续保留。
+
+                    lastTakenAt = takenTime;
+
+                    tvTakenStatus.setText(
+                            MedicineDbHelper.getTakenStatus(lastTakenAt)
+                    );
+
+                    boolean takenToday =
+                            MedicineDbHelper.isTakenToday(lastTakenAt);
+
+                    btnMarkTaken.setText(
+                            takenToday
+                                    ? "撤销今日记录"
+                                    : "标记今日已服药"
+                    );
+
+                    btnMarkTaken.setEnabled(true);
+//已有的修改按钮、删除按钮更新代码继续保留。
                     btnDeleteMedicine.setEnabled(true);
 
                     editIntent = new Intent(
@@ -361,6 +415,77 @@ public class MedicineDetailActivity extends AppCompatActivity {
                     minute,
                     repeatDaily
             );
+        }
+    }
+
+    //changeTakenStatus(false); // 记录
+    //changeTakenStatus(true);  // 撤销
+    private void changeTakenStatus(boolean undo) {
+        btnMarkTaken.setEnabled(false);
+        btnEditMedicine.setEnabled(false);
+        btnDeleteMedicine.setEnabled(false);
+
+        databaseExecutor.execute(() -> {
+            try {
+                int rows;
+
+                if (undo) {
+                    rows = dbHelper.clearMedicineTaken(medicineId);
+                } else {
+                    rows = dbHelper.markMedicineTaken(medicineId);
+                }
+
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) {
+                        return;
+                    }
+
+                    if (rows > 0) {
+                        Toast.makeText(
+                                this,
+                                undo ? "今日记录已撤销" : "今日服药已记录",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        loadMedicineDetail();
+                    } else {
+                        Toast.makeText(
+                                this,
+                                "这条用药计划已不存在",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        finish();
+                    }
+                });
+
+            } catch (Exception e) {
+                Log.e("MedicineDetail", "更新服药状态失败", e);
+
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) {
+                        return;
+                    }
+
+                    btnMarkTaken.setEnabled(true);
+                    btnEditMedicine.setEnabled(true);
+                    btnDeleteMedicine.setEnabled(true);
+
+                    Toast.makeText(
+                            this,
+                            "记录失败，请重试",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                });
+            }
+        });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (medicineId != -1) {
+            loadMedicineDetail();
         }
     }
 }

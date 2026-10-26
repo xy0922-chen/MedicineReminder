@@ -49,6 +49,28 @@
             android:lineSpacingExtra="4dp"
             android:textColor="#52685A" />
 
+        <TextView
+            android:id="@+id/tvTakenStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="18dp"
+            android:background="@drawable/bg_medicine_card"
+            android:text="正在读取服药状态……"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#174D39"
+            android:accessibilityLiveRegion="polite" />
+
+        <Button
+            android:id="@+id/btnMarkTaken"
+            style="@style/MedicinePrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:text="标记今日已服药" />
+
         <Button
             android:id="@+id/btnEditMedicine"
             style="@style/MedicinePrimaryButton"
