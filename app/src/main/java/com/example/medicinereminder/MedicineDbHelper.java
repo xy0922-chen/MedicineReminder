@@ -178,4 +178,30 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)}
         );
     }
+    public int updateMedicine(
+            long id,
+            String name,
+            String dose,
+            String meal,
+            int hour,
+            int minute,
+            boolean repeatDaily
+    ) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("dose", dose);
+        values.put("meal", meal);
+        values.put("hour", hour);
+        values.put("minute", minute);
+        values.put("repeat_daily", repeatDaily ? 1 : 0);
+
+        return db.update(
+                TABLE_MEDICINE,
+                values,
+                "_id = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
 }

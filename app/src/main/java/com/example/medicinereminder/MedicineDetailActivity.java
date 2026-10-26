@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import android.content.Intent;
 
 public class MedicineDetailActivity extends AppCompatActivity {
 
@@ -28,6 +29,10 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
     private final ExecutorService databaseExecutor =
             Executors.newSingleThreadExecutor();
+    private Button btnEditMedicine;
+
+    // 装载传给编辑页面的数据。
+    private Intent editIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,13 @@ public class MedicineDetailActivity extends AppCompatActivity {
                     .show();
         });
 
+        btnEditMedicine = findViewById(R.id.btnEditMedicine);
 
+        btnEditMedicine.setOnClickListener(v -> {
+            if (editIntent != null) {
+                startActivityForResult(editIntent, 200);
+            }
+        });
     }
 
     private void loadMedicineDetail() {
@@ -161,6 +172,21 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
                     tvMedicineDetail.setText(detail);
                     btnDeleteMedicine.setEnabled(true);
+
+                    editIntent = new Intent(
+                            MedicineDetailActivity.this,
+                            AddMedicineActivity.class
+                    );
+
+                    editIntent.putExtra("edit_mode", true);
+                    editIntent.putExtra("name", name);
+                    editIntent.putExtra("dose", dose);
+                    editIntent.putExtra("meal", meal);
+                    editIntent.putExtra("hour", hour);
+                    editIntent.putExtra("minute", minute);
+                    editIntent.putExtra("repeat_daily", repeatDaily);
+
+                    btnEditMedicine.setEnabled(true);
                 });
 
             } catch (Exception e) {
@@ -180,6 +206,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
     private void deleteMedicine() {
         btnDeleteMedicine.setEnabled(false);
+        btnEditMedicine.setEnabled(false);
 
         databaseExecutor.execute(() -> {
             try {
@@ -212,7 +239,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
                     }
 
                     btnDeleteMedicine.setEnabled(true);
-
+                    btnEditMedicine.setEnabled(true);
                     Toast.makeText(
                             this,
                             "删除失败，请重试",
@@ -233,5 +260,107 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
         databaseExecutor.shutdown();
         super.onDestroy();
+    }
+
+    private void saveChanges(
+            String name,
+            String dose,
+            String meal,
+            int hour,
+            int minute,
+            boolean repeatDaily
+    ) {
+        btnEditMedicine.setEnabled(false);
+        btnDeleteMedicine.setEnabled(false);
+
+        databaseExecutor.execute(() -> {
+            try {
+                int rows = dbHelper.updateMedicine(
+                        medicineId,
+                        name,
+                        dose,
+                        meal,
+                        hour,
+                        minute,
+                        repeatDaily
+                );
+
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) {
+                        return;
+                    }
+
+                    if (rows > 0) {
+                        Toast.makeText(
+                                this,
+                                "修改已保存",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        // 重新读取，也会更新下次编辑使用的数据。
+                        loadMedicineDetail();
+                    } else {
+                        Toast.makeText(
+                                this,
+                                "这条药品记录已不存在",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        finish();
+                    }
+                });
+
+            } catch (Exception e) {
+                Log.e("MedicineDetail", "修改失败", e);
+
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) {
+                        return;
+                    }
+
+                    btnEditMedicine.setEnabled(true);
+                    btnDeleteMedicine.setEnabled(true);
+
+                    Toast.makeText(
+                            this,
+                            "修改失败，请重试",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(
+            int requestCode,
+            int resultCode,
+            Intent data
+    ) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 200
+                && resultCode == RESULT_OK
+                && data != null) {
+
+            String name = data.getStringExtra("name");
+            String dose = data.getStringExtra("dose");
+            String meal = data.getStringExtra("meal");
+
+            int hour = data.getIntExtra("hour", -1);
+            int minute = data.getIntExtra("minute", -1);
+
+            boolean repeatDaily =
+                    data.getBooleanExtra("repeat_daily", false);
+
+            saveChanges(
+                    name,
+                    dose,
+                    meal,
+                    hour,
+                    minute,
+                    repeatDaily
+            );
+        }
     }
 }

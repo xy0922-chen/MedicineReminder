@@ -110,6 +110,47 @@ public class AddMedicineActivity extends AppCompatActivity {
                 updateTimeText();
             }
         }
+
+        boolean editMode =
+                getIntent().getBooleanExtra("edit_mode", false);
+
+        if (editMode) {
+            TextView tvPageTitle = findViewById(R.id.tvPageTitle);
+            tvPageTitle.setText("修改用药计划");
+
+            Button confirmButton = findViewById(R.id.btnSaveMedicine);
+            confirmButton.setText("保存修改");
+
+            // 只在第一次打开时填入旧值。
+            // 屏幕旋转后，不覆盖用户正在修改的内容。
+            if (savedInstanceState == null) {
+                Intent source = getIntent();
+
+                etMedicineName.setText(source.getStringExtra("name"));
+                etDose.setText(source.getStringExtra("dose"));
+
+                String meal = source.getStringExtra("meal");
+
+                if ("饭前".equals(meal)) {
+                    rgMeal.check(R.id.rbBeforeMeal);
+                } else if ("饭后".equals(meal)) {
+                    rgMeal.check(R.id.rbAfterMeal);
+                } else {
+                    rgMeal.check(R.id.rbOther);
+                }
+
+                reminderHour = source.getIntExtra("hour", -1);
+                reminderMinute = source.getIntExtra("minute", -1);
+
+                if (reminderHour >= 0 && reminderMinute >= 0) {
+                    updateTimeText();
+                }
+
+                cbDaily.setChecked(
+                        source.getBooleanExtra("repeat_daily", false)
+                );
+            }
+        }
     }
 
     private boolean checkMedicineInfo() {
@@ -209,6 +250,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         tvReminderTime.setText("提醒时间：" + time);
     }
+
 
 
 
