@@ -2,8 +2,9 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="64dp"
-    android:padding="16dp"
-    android:textSize="22sp"
-    android:textColor="#202124"
-    android:background="#FFFFFF" />
+    android:minHeight="72dp"
+    android:padding="18dp"
+    android:background="@drawable/bg_medicine_card"
+    android:textSize="21sp"
+    android:textColor="#203B2E"
+    android:lineSpacingExtra="6dp" />

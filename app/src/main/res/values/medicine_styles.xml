@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MedicinePrimaryButton"
+        parent="Widget.AppCompat.Button">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="backgroundTint">#246B50</item>
+        <item name="android:backgroundTint">#246B50</item>
+    </style>
+
+    <style name="MedicineSecondaryButton"
+        parent="MedicinePrimaryButton">
+        <item name="android:textColor">#174D39</item>
+        <item name="backgroundTint">#DDEEE4</item>
+        <item name="android:backgroundTint">#DDEEE4</item>
+    </style>
+
+    <style name="MedicineDeleteButton"
+        parent="MedicinePrimaryButton">
+        <item name="android:textColor">#922D2D</item>
+        <item name="backgroundTint">#FBE8E6</item>
+        <item name="android:backgroundTint">#FBE8E6</item>
+    </style>
+
+    <style name="MedicineInput">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">#203B2E</item>
+        <item name="android:textColorHint">#596D62</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:padding">14dp</item>
+        <item name="android:background">@drawable/bg_medicine_input</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:backgroundTint">@null</item>
+    </style>
+
+</resources>

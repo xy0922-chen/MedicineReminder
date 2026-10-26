@@ -1,64 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="30dp"
-    android:background="#F7F8FA">
+    android:background="#F1F7F3">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="安心用药"
-        android:textColor="#202124"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        tools:visibility="visible" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:text="记录用药计划，按时提醒"
-        android:textSize="20sp"
-        android:textColor="#4B5563" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="安心用药"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#174D39" />
 
-    <Button
-        android:id="@+id/btnAddMedicine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:minHeight="56dp"
-        android:text="添加药品"
-        android:textSize="22sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="用药有计划，生活更安心"
+            android:textSize="18sp"
+            android:textColor="#52685A" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="我的用药计划"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#202124" />
-    <ListView
-        android:id="@+id/lvMedicine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:divider="#D1D5DB"
-        android:dividerHeight="1dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:background="@drawable/bg_medicine_card">
 
-    <TextView
-        android:id="@+id/tvEmpty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="还没有用药计划，请点击上方“添加药品”。"
-        android:textSize="20sp"
-        android:textColor="#4B5563" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="我的健康小助手"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#203B2E" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="记录药品、用量和计划时间，方便随时查看。"
+                android:textSize="18sp"
+                android:lineSpacingExtra="4dp"
+                android:textColor="#52685A" />
+
+            <Button
+                android:id="@+id/btnAddMedicine"
+                style="@style/MedicinePrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="＋ 添加用药计划" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="我的用药计划"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#203B2E" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="点击计划，可查看、修改或删除"
+            android:textSize="18sp"
+            android:textColor="#52685A" />
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="24dp"
+            android:gravity="center"
+            android:background="@drawable/bg_medicine_card"
+            android:text="还没有用药计划\n点击上方按钮，添加第一条计划"
+            android:textSize="20sp"
+            android:lineSpacingExtra="8dp"
+            android:textColor="#52685A" />
+
+        <ListView
+            android:id="@+id/lvMedicine"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="12dp"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" />
+
+    </LinearLayout>
 </LinearLayout>

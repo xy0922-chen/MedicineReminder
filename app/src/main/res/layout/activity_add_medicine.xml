@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F7F8FA">
+    android:background="#F1F7F3">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,9 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="添加药品"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#202124" />
+            android:textColor="#174D39"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -48,7 +48,8 @@
             android:maxLines="1"
             android:textSize="22sp"
             android:textColor="#202124"
-            android:textColorHint="#62676F" />
+            android:textColorHint="#62676F"
+            style="@style/MedicineInput"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -57,7 +58,8 @@
             android:labelFor="@id/etDose"
             android:text="每次用量"
             android:textSize="22sp"
-            android:textColor="#202124" />
+            android:textColor="#202124"
+            />
 
         <EditText
             android:id="@+id/etDose"
@@ -69,7 +71,8 @@
             android:maxLines="1"
             android:textSize="22sp"
             android:textColor="#202124"
-            android:textColorHint="#62676F" />
+            android:textColorHint="#62676F"
+            style="@style/MedicineInput"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -89,10 +92,12 @@
                 android:id="@+id/rbBeforeMeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="56dp"
                 android:text="饭前"
                 android:textSize="22sp"
-                android:textColor="#202124" />
+                android:buttonTint="#246B50"
+                android:textColor="#203B2E"
+                android:minHeight="56dp"
+                />
 
             <RadioButton
                 android:id="@+id/rbAfterMeal"
@@ -101,7 +106,9 @@
                 android:minHeight="56dp"
                 android:text="饭后"
                 android:textSize="22sp"
-                android:textColor="#202124" />
+                android:buttonTint="#246B50"
+                android:textColor="#203B2E"
+                />
 
             <RadioButton
                 android:id="@+id/rbOther"
@@ -110,7 +117,8 @@
                 android:minHeight="56dp"
                 android:text="其他／遵医嘱"
                 android:textSize="22sp"
-                android:textColor="#202124" />
+                android:buttonTint="#246B50"
+                android:textColor="#203B2E" />
 
         </RadioGroup>
         <TextView
@@ -123,6 +131,7 @@
             android:textColor="#202124"/>
         <Button
             android:id="@+id/btnChooseTime"
+            style="@style/MedicineSecondaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="56dp"
@@ -138,10 +147,14 @@
             android:layout_marginTop="16dp"
             android:text="每天重复提醒"
             android:textSize="22sp"
-            android:textColor="#202124" />
+            android:buttonTint="#246B50"
+            android:textColor="#203B2E"
+
+            />
 
         <Button
             android:id="@+id/btnCheck"
+            style="@style/MedicineSecondaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="56dp"
@@ -160,6 +173,7 @@
             android:visibility="gone" />
         <Button
             android:id="@+id/btnSaveMedicine"
+            style="@style/MedicineSecondaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="56dp"
