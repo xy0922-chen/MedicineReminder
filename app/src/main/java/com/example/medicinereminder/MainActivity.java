@@ -27,13 +27,15 @@ public class MainActivity extends AppCompatActivity {
 
     private final ExecutorService databaseExecutor =
             Executors.newSingleThreadExecutor();
+    private ArrayList<Long> medicineIds=new ArrayList<>();
 
     //除了保存意外，重新打开首页也需要读取
     private void loadMedicines() {
         databaseExecutor.execute(() -> {
             try {
-                ArrayList<String> savedList =
-                        dbHelper.getAllMedicines();
+                ArrayList<Long> savedIds = new ArrayList<>();
+
+                ArrayList<String> savedList = dbHelper.getAllMedicines(savedIds);
 
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) {
@@ -42,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
                     medicineList.clear();
                     medicineList.addAll(savedList);
+
+                    medicineIds.clear();
+                    medicineIds.addAll(savedIds);
+                    Log.d(
+                            "MedicineList",
+                            "文字数量=" + medicineList.size()
+                                    + "，编号数量=" + medicineIds.size()
+                    );
                     medicineAdapter.notifyDataSetChanged();
                 });
 
@@ -71,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dbHelper=new MedicineDbHelper(this);//初始化一次
         Button btnAddMedicine =findViewById(R.id.btnAddMedicine);
+
         btnAddMedicine.setOnClickListener(V->{
             Intent intent=new Intent(
                     MainActivity.this,
@@ -88,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
         //listView使用
         lvMedicine=findViewById(R.id.lvMedicine);
         TextView tvEmpty=findViewById(R.id.tvEmpty);
-        if(savedInstanceState!=null){
+       /* if(savedInstanceState!=null){
             ArrayList<String> savedList=savedInstanceState.getStringArrayList("medicine_list");
             if(savedList!=null){
                 medicineList=savedList;
             }
-        }
+        }*/
         medicineAdapter=new ArrayAdapter<>(
                 this,
                 R.layout.item_medicine,
@@ -101,15 +112,48 @@ public class MainActivity extends AppCompatActivity {
         );//this:当前页面，上下文 R.layout.item_medcine:每条记录使用的布局 medicineList：要显示的数据集合
         lvMedicine.setAdapter(medicineAdapter);
         lvMedicine.setEmptyView(tvEmpty);
-        loadMedicines();
+        lvMedicine.setOnItemClickListener(
+                (parent, view, position, id) -> {
+                    if (position < 0
+                            || position >= medicineIds.size()
+                            || medicineIds.size() != medicineList.size()) {
+
+                        Log.e(
+                                "MedicineClick",
+                                "列表与编号不一致：position=" + position
+                                        + ", 文字数量=" + medicineList.size()
+                                        + ", 编号数量=" + medicineIds.size()
+                        );
+
+                        Toast.makeText(
+                                MainActivity.this,
+                                "列表正在刷新，请稍后再试",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        loadMedicines();
+                        return;
+                    }
+
+                    long medicineId = medicineIds.get(position);
+
+                    Intent intent = new Intent(
+                            MainActivity.this,
+                            MedicineDetailActivity.class
+                    );
+
+                    intent.putExtra("medicine_id", medicineId);
+
+                    startActivity(intent);
+                }
+        );
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
+  /*  protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putStringArrayList("medicine_list", medicineList);
-    }
+    }*/
     private void saveMedicine(
             String name,
             String dose,
@@ -135,8 +179,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // 第二步：读取保存后的全部记录。
+                ArrayList<Long> savedIds=new ArrayList<>();
                 ArrayList<String> savedList =
-                        dbHelper.getAllMedicines();
+                        dbHelper.getAllMedicines(savedIds);
 
                 // 第三步：回到主线程更新首页。
                 runOnUiThread(() -> {
@@ -146,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
 
                     medicineList.clear();
                     medicineList.addAll(savedList);
+
+                    medicineIds.clear();
+                    medicineIds.addAll(savedIds);
 
                     medicineAdapter.notifyDataSetChanged();
 
@@ -233,4 +281,10 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
     }//页面销毁时关闭资源
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadMedicines();
+    }
 }

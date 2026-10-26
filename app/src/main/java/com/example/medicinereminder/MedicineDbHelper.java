@@ -73,36 +73,59 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_MEDICINE, null, values);
     }
  //新增查询方法
- public ArrayList<String> getAllMedicines(){
-        ArrayList<String> list=new ArrayList<>();
-        SQLiteDatabase db=getReadableDatabase();
+ public ArrayList<String> getAllMedicines(ArrayList<Long> ids) {
+     ArrayList<String> list = new ArrayList<>();
+     ids.clear();
 
-        //Cursor（游标）是 SQLite 查询结果的数据集容器，相当于一张结果表格，用来存放 db.query () 查出来的多行数据。
-         Cursor cursor = db.query(
-                 TABLE_MEDICINE,
-                 new String[]{
-                         "name",
-                         "dose",
-                         "meal",
-                         "hour",
-                         "minute",
-                         "repeat_daily"
-                 },
-                 null,
-                 null,
-                 null,
-                 null,
-                 "_id ASC"
-         );
+     SQLiteDatabase db = getReadableDatabase();
+
+     Cursor cursor = db.query(
+             TABLE_MEDICINE,
+             new String[]{
+                     "_id",
+                     "name",
+                     "dose",
+                     "meal",
+                     "hour",
+                     "minute",
+                     "repeat_daily"
+             },
+             null,
+             null,
+             null,
+             null,
+             "_id ASC"
+     );
+
      try {
          while (cursor.moveToNext()) {
-             String name = cursor.getString(0);
-             String dose = cursor.getString(1);
-             String meal = cursor.getString(2);
+             long medicineId = cursor.getLong(
+                     cursor.getColumnIndexOrThrow("_id")
+             );
 
-             int hour = cursor.getInt(3);
-             int minute = cursor.getInt(4);
-             boolean repeatDaily = cursor.getInt(5) == 1;
+             String name = cursor.getString(
+                     cursor.getColumnIndexOrThrow("name")
+             );
+
+             String dose = cursor.getString(
+                     cursor.getColumnIndexOrThrow("dose")
+             );
+
+             String meal = cursor.getString(
+                     cursor.getColumnIndexOrThrow("meal")
+             );
+
+             int hour = cursor.getInt(
+                     cursor.getColumnIndexOrThrow("hour")
+             );
+
+             int minute = cursor.getInt(
+                     cursor.getColumnIndexOrThrow("minute")
+             );
+
+             boolean repeatDaily = cursor.getInt(
+                     cursor.getColumnIndexOrThrow("repeat_daily")
+             ) == 1;
 
              String time = String.format(
                      Locale.getDefault(),
@@ -111,15 +134,16 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                      minute
              );
 
-             String repeatText = repeatDaily ? "每天重复" : "仅一次";
-
              String medicineInfo =
                      "药品名称：" + name + "\n"
                              + "每次用量：" + dose + "\n"
                              + "服用备注：" + meal + "\n"
                              + "提醒时间：" + time + "\n"
-                             + "重复方式：" + repeatText;
+                             + "重复方式："
+                             + (repeatDaily ? "每天重复" : "仅一次");
 
+             // 同一条记录的编号和文字，必须一起加入。
+             ids.add(medicineId);
              list.add(medicineInfo);
          }
      } finally {
@@ -128,4 +152,30 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
 
      return list;
  }
+    // 根据编号查询一条药品。
+    // 调用者读取完成后，需要关闭返回的 Cursor。
+    public Cursor getMedicineById(long id) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        return db.query(
+                TABLE_MEDICINE,
+                null,
+                "_id = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null
+        );
+    }
+
+    // 根据编号删除药品，返回删除的行数。
+    public int deleteMedicine(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        return db.delete(
+                TABLE_MEDICINE,
+                "_id = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
 }
