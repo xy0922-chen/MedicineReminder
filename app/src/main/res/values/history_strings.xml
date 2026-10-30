@@ -1,0 +1,17 @@
+<resources>
+    <string name="history_title">服药历史</string>
+    <string name="history_today">今天</string>
+    <string name="history_week">近7天</string>
+    <string name="history_all">全部</string>
+    <string name="history_help">按手机本地日期查看。每天每条计划保留一条确认记录；撤销今日记录不会删除其他日期的记录。药品修改或删除后，原有历史仍保留。</string>
+    <string name="history_loading">正在读取记录…</string>
+    <string name="history_empty">这个时间范围内没有服药记录</string>
+    <string name="history_error">读取失败，请重新进入此页重试</string>
+    <string name="history_count">显示 %1$d 条，最多显示最近 %2$d 条</string>
+    <string name="history_back">返回首页</string>
+    <string name="overview_title">今日记录概览</string>
+    <string name="overview_loading">正在读取今日记录…</string>
+    <string name="overview_counts">现有计划 %1$d 项\n今日已记录 %2$d 项 · 今日待记录 %3$d 项</string>
+    <string name="overview_help">按现有全部计划统计，不代表今日实际到期或应服药次数</string>
+    <string name="overview_error">今日概览读取失败，请重新进入首页</string>
+</resources>
