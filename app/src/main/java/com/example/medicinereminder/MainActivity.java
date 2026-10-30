@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         dbHelper=new MedicineDbHelper(this);//初始化一次
+        findViewById(R.id.btnReminderSettings).setOnClickListener(v ->
+                startActivity(new Intent(this, ReminderSettingsActivity.class)));
         Button btnAddMedicine =findViewById(R.id.btnAddMedicine);
 
         btnAddMedicine.setOnClickListener(V->{
@@ -286,5 +288,9 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         loadMedicines();
+        databaseExecutor.execute(() -> {
+            try { ReminderManager.reconcile(getApplicationContext()); }
+            catch (Exception e) { Log.e("MedicineReminder", "恢复提醒失败", e); }
+        });
     }
 }

@@ -1,0 +1,24 @@
+<resources>
+    <string name="reminder_settings_title">用药提醒设置</string>
+    <string name="reminder_title">用药计划提醒</string>
+    <string name="reminder_message">%1$s；每次用量：%2$s；%3$s。请按医嘱核对，点击查看详情并记录服药。</string>
+    <string name="reminder_status">提醒开关：%1$s\n通知权限：%2$s\n定时权限：%3$s</string>
+    <string name="reminder_on">已开启</string>
+    <string name="reminder_off">已关闭</string>
+    <string name="reminder_allowed">已允许</string>
+    <string name="reminder_blocked">未允许</string>
+    <string name="reminder_help">先允许下方两项权限，再开启提醒。已有计划也会安排提醒。\n\n每天重复的计划每天提醒；仅一次的计划只提醒一次，已过去的时间安排到明天。当天已记录服药的计划不再发出当日通知。\n\n关闭后停止提醒，药品数据保留。重新开启会恢复尚未完成的安排；如需再次安排已结束的单次提醒，请修改并保存该计划。\n\n正常返回桌面后仍可提醒。声音和横幅由系统通知设置决定；强行停止、设备关机或权限关闭会影响提醒。</string>
+    <string name="reminder_notification_permission">1. 允许通知</string>
+    <string name="reminder_exact_permission">2. 允许闹钟和提醒</string>
+    <string name="reminder_enable">开启用药提醒</string>
+    <string name="reminder_disable">关闭用药提醒</string>
+    <string name="reminder_back">返回首页</string>
+    <string name="reminder_permission_granted">通知授权完成，请继续检查定时权限并开启提醒</string>
+    <string name="reminder_permission_denied">通知尚未授权；若不再弹窗，请在系统应用通知设置中允许</string>
+    <string name="reminder_exact_ready">定时权限已就绪</string>
+    <string name="reminder_need_permissions">请先允许通知和闹钟权限，再开启提醒</string>
+    <string name="reminder_settings_missing">无法打开此设置，请在系统应用设置中开启权限</string>
+    <string name="reminder_enabled_message">提醒已开启，已有计划已安排</string>
+    <string name="reminder_disabled_message">提醒已关闭，计划数据保留</string>
+    <string name="reminder_failed">设置未完成，请检查权限后重试</string>
+</resources>

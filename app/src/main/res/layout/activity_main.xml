@@ -63,6 +63,14 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnReminderSettings"
+            style="@style/MedicineSecondaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/reminder_settings_title" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

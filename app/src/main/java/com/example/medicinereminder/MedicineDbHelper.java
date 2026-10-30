@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MedicineDbHelper extends SQLiteOpenHelper {
+    // 提醒模块只在原有数据操作成功后接入。
+    private final Context reminderContext;
 
     private static final String DATABASE_NAME = "medicine.db";
     private static final int DATABASE_VERSION = 2;
@@ -26,6 +28,7 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
                 null,
                 DATABASE_VERSION
         );
+        reminderContext = context.getApplicationContext();
     }
 
     @Override
@@ -81,7 +84,9 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
         values.put("minute", minute);
         values.put("repeat_daily", repeatDaily ? 1 : 0);
 
-        return db.insert(TABLE_MEDICINE, null, values);
+        long insertedId = db.insert(TABLE_MEDICINE, null, values);
+        if (insertedId != -1) ReminderManager.changed(reminderContext, insertedId);
+        return insertedId;
     }
  //新增查询方法
  public ArrayList<String> getAllMedicines(ArrayList<Long> ids) {
@@ -191,11 +196,13 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
     public int deleteMedicine(long id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        return db.delete(
+        int rows = db.delete(
                 TABLE_MEDICINE,
                 "_id = ?",
                 new String[]{String.valueOf(id)}
         );
+        if (rows > 0) ReminderManager.removed(reminderContext, id);
+        return rows;
     }
     public int updateMedicine(
             long id,
@@ -216,12 +223,14 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
         values.put("minute", minute);
         values.put("repeat_daily", repeatDaily ? 1 : 0);
 
-        return db.update(
+        int rows = db.update(
                 TABLE_MEDICINE,
                 values,
                 "_id = ?",
                 new String[]{String.valueOf(id)}
         );
+        if (rows > 0) ReminderManager.changed(reminderContext, id);
+        return rows;
     }
     // 判断某个记录时间是否属于手机当前日期。
     public static boolean isTakenToday(long timestamp) {
@@ -260,12 +269,14 @@ public class MedicineDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("last_taken_at", System.currentTimeMillis());
 //System.currentTimeMillis()获取当前时间的毫秒值。
-        return db.update(
+        int rows = db.update(
                 TABLE_MEDICINE,
                 values,
                 "_id = ?",
                 new String[]{String.valueOf(id)}
         );
+        if (rows > 0) ReminderManager.taken(reminderContext, id);
+        return rows;
     }
 
     public int clearMedicineTaken(long id) {
