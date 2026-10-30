@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.widget.TextView;
 import android.widget.ListView;
-import android.widget.ArrayAdapter;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Locale;
 import android.util.Log;
@@ -25,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
     //新增listview
     private ListView lvMedicine;//view用于展示
     private ArrayList<String> medicineList=new ArrayList<>();//存放多多条药品文字
-    private ArrayAdapter<String> medicineAdapter;//将集合上的数据转换成列表条目
+    private MedicineCardAdapter medicineAdapter;//只调整药品卡片展示，历史列表不受影响
     private MedicineDbHelper dbHelper;
     private TextView tvTodayOverview;
+    private TextView tvReminderSummary, tvReminderDescription;
     private BottomNavigationView bottomNavigation;
     private int selectedTab = R.id.navHome;
     private OnBackPressedCallback tabBackCallback;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
                 ArrayList<String> savedList = dbHelper.getAllMedicines(savedIds);
                 int[] overview = dbHelper.getTodayOverview();
+                Map<Long, MedicineCardAdapter.Card> cardSnapshot =
+                        MedicineCardAdapter.readCards(dbHelper.getReadableDatabase());
 
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) {
@@ -60,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
                             "文字数量=" + medicineList.size()
                                     + "，编号数量=" + medicineIds.size()
                     );
-                    medicineAdapter.notifyDataSetChanged();
+                    medicineAdapter.setCards(cardSnapshot, savedIds);
+                    refreshReminderStatus();
                     tvTodayOverview.setText(getString(R.string.overview_counts,
                             overview[0], overview[1], overview[2]));
                 });
@@ -92,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dbHelper=new MedicineDbHelper(this);//初始化一次
         tvTodayOverview = findViewById(R.id.tvTodayOverview);
+        tvReminderSummary = findViewById(R.id.tvReminderSummary);
+        tvReminderDescription = findViewById(R.id.tvReminderDescription);
+        findViewById(R.id.btnManageReminderStatus).setOnClickListener(v ->
+                findViewById(R.id.btnReminderSettings).performClick());
         findViewById(R.id.btnHistory).setOnClickListener(v ->
                 startActivity(new Intent(this, MedicineHistoryActivity.class)));
         findViewById(R.id.btnReminderSettings).setOnClickListener(v ->
@@ -121,11 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 medicineList=savedList;
             }
         }*/
-        medicineAdapter=new ArrayAdapter<>(
-                this,
-                R.layout.item_medicine,
-                medicineList
-        );//this:当前页面，上下文 R.layout.item_medcine:每条记录使用的布局 medicineList：要显示的数据集合
+        medicineAdapter = new MedicineCardAdapter(this, medicineList);
         lvMedicine.setAdapter(medicineAdapter);
         lvMedicine.setEmptyView(tvEmpty);
         lvMedicine.setOnItemClickListener(
@@ -195,11 +199,34 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.btnAddMedicine).performClick());
     }
 
+    // 只读提醒状态。返回权限设置页或重新显示首页时刷新，不切换提醒开关。
+    private void refreshReminderStatus() {
+        if (tvReminderSummary == null) return;
+        try {
+            ReminderStatusPresentation state = ReminderStatusPresentation.read(this);
+            tvReminderSummary.setText(state.title());
+            tvReminderSummary.setBackgroundResource(!state.enabled ? R.drawable.bg_status_neutral
+                    : state.ready() ? R.drawable.bg_status_green : R.drawable.bg_status_warning);
+            tvReminderSummary.setTextColor(android.graphics.Color.parseColor(
+                    state.ready() ? "#174D39" : !state.enabled ? "#56665D" : "#805414"));
+            tvReminderDescription.setText(state.description(this));
+            if (medicineAdapter != null) medicineAdapter.setReminderStatus(state);
+        } catch (Exception e) {
+            Log.e("MedicineReminder", "读取提醒展示状态失败", e);
+            tvReminderSummary.setText(R.string.reminder_summary_unavailable);
+            tvReminderSummary.setBackgroundResource(R.drawable.bg_status_warning);
+            tvReminderSummary.setTextColor(android.graphics.Color.parseColor("#805414"));
+            tvReminderDescription.setText(R.string.reminder_summary_blocked_help);
+            if (medicineAdapter != null) medicineAdapter.setReminderStatus(null);
+        }
+    }
+
     private void showMainTab(int tab) {
         selectedTab = tab == R.id.navMedicines ? R.id.navMedicines : R.id.navHome;
         findViewById(R.id.pageHome).setVisibility(selectedTab == R.id.navHome ? View.VISIBLE : View.GONE);
         findViewById(R.id.pageMedicines).setVisibility(selectedTab == R.id.navMedicines ? View.VISIBLE : View.GONE);
         tabBackCallback.setEnabled(selectedTab != R.id.navHome);
+        refreshReminderStatus();
     }
 
     @Override protected void onNewIntent(Intent intent) {
@@ -248,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> savedList =
                         dbHelper.getAllMedicines(savedIds);
                 int[] overview = dbHelper.getTodayOverview();
+                Map<Long, MedicineCardAdapter.Card> cardSnapshot =
+                        MedicineCardAdapter.readCards(dbHelper.getReadableDatabase());
 
                 // 第三步：回到主线程更新首页。
                 runOnUiThread(() -> {
@@ -261,7 +290,8 @@ public class MainActivity extends AppCompatActivity {
                     medicineIds.clear();
                     medicineIds.addAll(savedIds);
 
-                    medicineAdapter.notifyDataSetChanged();
+                    medicineAdapter.setCards(cardSnapshot, savedIds);
+                    refreshReminderStatus();
                     tvTodayOverview.setText(getString(R.string.overview_counts,
                             overview[0], overview[1], overview[2]));
 
@@ -354,9 +384,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         loadMedicines();
+        refreshReminderStatus();
         databaseExecutor.execute(() -> {
             try { ReminderManager.reconcile(getApplicationContext()); }
             catch (Exception e) { Log.e("MedicineReminder", "恢复提醒失败", e); }
+            runOnUiThread(() -> {
+                if (!isFinishing() && !isDestroyed()) refreshReminderStatus();
+            });
         });
     }
 }

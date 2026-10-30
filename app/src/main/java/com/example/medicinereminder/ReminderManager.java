@@ -31,6 +31,20 @@ public final class ReminderManager {
         return prefs(c).getBoolean("enabled", false);
     }
 
+    /** 提供界面所需的只读快照，不改变提醒的安排与取消逻辑。 */
+    static java.util.Map<Long, Long> savedSchedules(Context c) {
+        java.util.Map<Long, Long> schedules = new java.util.HashMap<>();
+        for (java.util.Map.Entry<String, ?> entry : prefs(c).getAll().entrySet()) {
+            if (entry.getKey().startsWith(PREFIX) && entry.getValue() instanceof Long) {
+                try {
+                    schedules.put(Long.parseLong(entry.getKey().substring(PREFIX.length())),
+                            (Long) entry.getValue());
+                } catch (NumberFormatException ignored) { /* 忽略无效的计划编号 */ }
+            }
+        }
+        return schedules;
+    }
+
     public static void createChannel(Context c) {
         if (Build.VERSION.SDK_INT >= 26) {
             NotificationChannel channel = new NotificationChannel(CHANNEL,
