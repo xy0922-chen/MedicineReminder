@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
     private int selectedTab = R.id.navHome;
     private OnBackPressedCallback tabBackCallback;
+    private DashboardController dashboard;
 
     private final ExecutorService databaseExecutor =
             Executors.newSingleThreadExecutor();
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     refreshReminderStatus();
                     tvTodayOverview.setText(getString(R.string.overview_counts,
                             overview[0], overview[1], overview[2]));
+                    dashboard.refresh();
                 });
 
             } catch (Exception e) {
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     tvTodayOverview.setText(R.string.overview_error);
+                    dashboard.refresh();
                     Toast.makeText(
                             MainActivity.this,
                             "读取药品失败",
@@ -94,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        dashboard = new DashboardController(this);
+        findViewById(R.id.btnBoardHistory).setOnClickListener(v ->
+                findViewById(R.id.btnHistory).performClick());
         dbHelper=new MedicineDbHelper(this);//初始化一次
         tvTodayOverview = findViewById(R.id.tvTodayOverview);
         tvReminderSummary = findViewById(R.id.tvReminderSummary);
@@ -192,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         int tab = savedState == null
                 ? getIntent().getIntExtra(MedicineBottomNavigation.EXTRA_TAB, R.id.navHome)
                 : savedState.getInt(MedicineBottomNavigation.EXTRA_TAB, R.id.navHome);
-        bottomNavigation.setSelectedItemId(tab == R.id.navMedicines ? R.id.navMedicines : R.id.navHome);
+        bottomNavigation.setSelectedItemId(normalizeTab(tab));
         findViewById(R.id.btnOpenMedicines).setOnClickListener(v ->
                 bottomNavigation.setSelectedItemId(R.id.navMedicines));
         findViewById(R.id.btnHomeAddMedicine).setOnClickListener(v ->
@@ -207,24 +213,29 @@ public class MainActivity extends AppCompatActivity {
             tvReminderSummary.setText(state.title());
             tvReminderSummary.setBackgroundResource(!state.enabled ? R.drawable.bg_status_neutral
                     : state.ready() ? R.drawable.bg_status_green : R.drawable.bg_status_warning);
-            tvReminderSummary.setTextColor(android.graphics.Color.parseColor(
-                    state.ready() ? "#174D39" : !state.enabled ? "#56665D" : "#805414"));
+            tvReminderSummary.setTextColor(getColor(state.ready() ? R.color.brand_primary_dark : !state.enabled ? R.color.app_muted : R.color.warning_text));
             tvReminderDescription.setText(state.description(this));
             if (medicineAdapter != null) medicineAdapter.setReminderStatus(state);
         } catch (Exception e) {
             Log.e("MedicineReminder", "读取提醒展示状态失败", e);
             tvReminderSummary.setText(R.string.reminder_summary_unavailable);
             tvReminderSummary.setBackgroundResource(R.drawable.bg_status_warning);
-            tvReminderSummary.setTextColor(android.graphics.Color.parseColor("#805414"));
+            tvReminderSummary.setTextColor(getColor(R.color.warning_text));
             tvReminderDescription.setText(R.string.reminder_summary_blocked_help);
             if (medicineAdapter != null) medicineAdapter.setReminderStatus(null);
         }
     }
 
+    private int normalizeTab(int tab) {
+        return tab == R.id.navMedicines || tab == R.id.navDashboard ? tab : R.id.navHome;
+    }
+
     private void showMainTab(int tab) {
-        selectedTab = tab == R.id.navMedicines ? R.id.navMedicines : R.id.navHome;
+        selectedTab = normalizeTab(tab);
         findViewById(R.id.pageHome).setVisibility(selectedTab == R.id.navHome ? View.VISIBLE : View.GONE);
         findViewById(R.id.pageMedicines).setVisibility(selectedTab == R.id.navMedicines ? View.VISIBLE : View.GONE);
+        findViewById(R.id.pageDashboard).setVisibility(selectedTab == R.id.navDashboard ? View.VISIBLE : View.GONE);
+        if (selectedTab == R.id.navDashboard) dashboard.refresh();
         tabBackCallback.setEnabled(selectedTab != R.id.navHome);
         refreshReminderStatus();
     }
@@ -233,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         int tab = intent.getIntExtra(MedicineBottomNavigation.EXTRA_TAB, R.id.navHome);
-        bottomNavigation.setSelectedItemId(tab == R.id.navMedicines ? R.id.navMedicines : R.id.navHome);
+        bottomNavigation.setSelectedItemId(normalizeTab(tab));
     }
 
     @Override protected void onSaveInstanceState(Bundle outState) {
@@ -294,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
                     refreshReminderStatus();
                     tvTodayOverview.setText(getString(R.string.overview_counts,
                             overview[0], overview[1], overview[2]));
+                    dashboard.refresh();
 
                     Toast.makeText(
                             MainActivity.this,
@@ -369,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onDestroy() {
+        if (dashboard != null) dashboard.close();
         databaseExecutor.execute(() -> {
             if (dbHelper != null) {
                 dbHelper.close();

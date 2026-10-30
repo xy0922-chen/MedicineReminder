@@ -2,7 +2,6 @@ package com.example.medicinereminder;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -21,8 +20,8 @@ import java.util.concurrent.Executors;
 public class MedicineHistoryActivity extends AppCompatActivity {
     private MedicineDbHelper helper;
     private TextView status, empty;
-    private ArrayAdapter<String> adapter;
-    private final ArrayList<String> items = new ArrayList<>();
+    private HistoryRecordAdapter adapter;
+    private final ArrayList<HistoryRecordAdapter.Record> items = new ArrayList<>();
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private RadioGroup range;
     private int requestVersion;
@@ -43,7 +42,7 @@ public class MedicineHistoryActivity extends AppCompatActivity {
         range = findViewById(R.id.rgHistoryRange);
         if (state != null) range.check(state.getInt("history_range", R.id.rbHistoryToday));
         ListView list = findViewById(R.id.lvHistory);
-        adapter = new ArrayAdapter<>(this, R.layout.item_medicine, items);
+        adapter = new HistoryRecordAdapter(this, items);
         list.setAdapter(adapter);
         list.setEmptyView(empty);
         range.setOnCheckedChangeListener((group, id) -> load());
@@ -59,8 +58,8 @@ public class MedicineHistoryActivity extends AppCompatActivity {
         status.setText(R.string.history_loading);
         worker.execute(() -> {
             try {
-                ArrayList<String> rows = MedicineHistoryStore.history(
-                        helper.getReadableDatabase(), days, System.currentTimeMillis());
+                ArrayList<HistoryRecordAdapter.Record> rows = HistoryRecordAdapter.read(
+                        helper.getReadableDatabase(), days, System.currentTimeMillis(), MedicineHistoryStore.DISPLAY_LIMIT);
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed() || version != requestVersion) return;
                     items.addAll(rows); adapter.notifyDataSetChanged();

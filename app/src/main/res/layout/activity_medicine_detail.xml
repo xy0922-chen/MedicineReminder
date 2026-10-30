@@ -1,101 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F1F7F3">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="用药详情"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="#174D39" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="认真核对每一项用药信息"
-            android:textSize="18sp"
-            android:textColor="#52685A" />
-
-        <TextView
-            android:id="@+id/tvMedicineDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:padding="20dp"
-            android:background="@drawable/bg_medicine_card"
-            android:text="正在读取用药信息……"
-            android:textSize="22sp"
-            android:lineSpacingExtra="6dp"
-            android:textColor="#203B2E" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="温馨提示：请按照医嘱填写和核对用药信息。"
-            android:textSize="18sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="#52685A" />
-
-        <TextView
-            android:id="@+id/tvTakenStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:padding="18dp"
-            android:background="@drawable/bg_medicine_card"
-            android:text="正在读取服药状态……"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#174D39"
-            android:accessibilityLiveRegion="polite" />
-
-        <Button
-            android:id="@+id/btnMarkTaken"
-            style="@style/MedicinePrimaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:text="标记今日已服药" />
-
-        <Button
-            android:id="@+id/btnEditMedicine"
-            style="@style/MedicinePrimaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:enabled="false"
-            android:text="修改用药计划" />
-
-        <Button
-            android:id="@+id/btnBack"
-            style="@style/MedicineSecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="返回首页" />
-
-        <Button
-            android:id="@+id/btnDeleteMedicine"
-            style="@style/MedicineDeleteButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="删除此计划"
-            android:enabled="false" />
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/main" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/app_background">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+      <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@drawable/ui_ic_pill" android:padding="8dp" android:contentDescription="@null" android:importantForAccessibility="no" android:focusable="false" android:clickable="false" android:background="@drawable/bg_ui_icon" />
+      <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="用药详情" android:textSize="30sp" android:textStyle="bold" android:textColor="@color/brand_primary_dark" android:layout_weight="1" android:layout_marginStart="12dp" />
     </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="认真核对每一项用药信息" android:textSize="18sp" android:textColor="@color/app_muted" />
+    <TextView android:id="@+id/tvMedicineDetail" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:padding="20dp" android:background="@drawable/bg_medicine_card" android:text="正在读取用药信息……" android:textSize="22sp" android:lineSpacingExtra="7dp" android:textColor="@color/app_ink" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="温馨提示：请按照医嘱填写和核对用药信息。" android:textSize="18sp" android:lineSpacingExtra="4dp" android:textColor="@color/app_muted" />
+    <TextView android:id="@+id/tvTakenStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:padding="18dp" android:background="@drawable/bg_medicine_card" android:text="正在读取服药状态……" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/brand_primary_dark" android:accessibilityLiveRegion="polite" android:lineSpacingExtra="7dp" />
+    <Button android:id="@+id/btnMarkTaken" style="@style/MedicinePrimaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:enabled="false" android:text="标记今日已服药" android:drawableStart="@drawable/ui_ic_check" android:drawablePadding="10dp" android:drawableTint="#FFFFFF" />
+    <Button android:id="@+id/btnEditMedicine" style="@style/MedicinePrimaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:enabled="false" android:text="修改用药计划" android:drawableStart="@drawable/ui_ic_edit" android:drawablePadding="10dp" android:drawableTint="#FFFFFF" />
+    <Button android:id="@+id/btnBack" style="@style/MedicineSecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="返回首页" android:drawableStart="@drawable/ui_ic_back" android:drawablePadding="10dp" android:drawableTint="@color/brand_primary" />
+    <Button android:id="@+id/btnDeleteMedicine" style="@style/MedicineDeleteButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="删除此计划" android:enabled="false" android:drawableStart="@drawable/ui_ic_delete" android:drawablePadding="10dp" android:drawableTint="@color/danger_text" />
+  </LinearLayout>
 </ScrollView>

@@ -1,2 +1,7 @@
 <resources><style name="MedicineNavigationLabel" parent="TextAppearance.MaterialComponents.Caption">
-<item name="android:textSize">16sp</item><item name="android:textStyle">bold</item></style></resources>
+<item name="android:textSize">16sp</item><item name="android:textStyle">bold</item></style>
+<style name="MedicineNavigationIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+  <item name="android:width">56dp</item>
+  <item name="android:height">28dp</item>
+  <item name="android:color">@color/brand_primary_soft</item>
+</style></resources>

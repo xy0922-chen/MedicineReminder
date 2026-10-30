@@ -11,7 +11,7 @@ final class MedicineBottomNavigation {
     static final String EXTRA_TAB = "navigation_tab";
 
     static void style(BottomNavigationView bar) {
-        bar.setItemActiveIndicatorColor(ColorStateList.valueOf(Color.rgb(221, 238, 228)));
+        bar.setItemActiveIndicatorColor(ColorStateList.valueOf(bar.getContext().getColor(R.color.brand_primary_soft)));
     }
 
     static void bindHistory(AppCompatActivity activity) {

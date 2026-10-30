@@ -1,186 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F1F7F3">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <TextView
-            android:id="@+id/tvPageTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="添加药品"
-            android:textColor="#174D39"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="请按照医嘱填写用药信息"
-            android:textSize="20sp"
-            android:textColor="#4B5563" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:labelFor="@id/etMedicineName"
-            android:text="药品名称"
-            android:textSize="22sp"
-            android:textColor="#202124" />
-
-        <EditText
-            android:id="@+id/etMedicineName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:hint="请输入药品名称"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textSize="22sp"
-            android:textColor="#202124"
-            android:textColorHint="#62676F"
-            style="@style/MedicineInput"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:labelFor="@id/etDose"
-            android:text="每次用量"
-            android:textSize="22sp"
-            android:textColor="#202124"
-            />
-
-        <EditText
-            android:id="@+id/etDose"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:hint="填写数量和单位，如 1 片"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textSize="22sp"
-            android:textColor="#202124"
-            android:textColorHint="#62676F"
-            style="@style/MedicineInput"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="服用备注"
-            android:textSize="22sp"
-            android:textColor="#202124" />
-
-        <RadioGroup
-            android:id="@+id/rgMeal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/rbBeforeMeal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="饭前"
-                android:textSize="22sp"
-                android:buttonTint="#246B50"
-                android:textColor="#203B2E"
-                android:minHeight="56dp"
-                />
-
-            <RadioButton
-                android:id="@+id/rbAfterMeal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="56dp"
-                android:text="饭后"
-                android:textSize="22sp"
-                android:buttonTint="#246B50"
-                android:textColor="#203B2E"
-                />
-
-            <RadioButton
-                android:id="@+id/rbOther"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="56dp"
-                android:text="其他／遵医嘱"
-                android:textSize="22sp"
-                android:buttonTint="#246B50"
-                android:textColor="#203B2E" />
-
-        </RadioGroup>
-        <TextView
-            android:id="@+id/tvReminderTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="提醒时间尚未选择"
-            android:textSize="22sp"
-            android:textColor="#202124"/>
-        <Button
-            android:id="@+id/btnChooseTime"
-            style="@style/MedicineSecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:layout_marginTop="8dp"
-            android:text="选择提醒时间"
-            android:textSize="22sp" />
-
-        <CheckBox
-            android:id="@+id/cbDaily"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:layout_marginTop="16dp"
-            android:text="每天重复提醒"
-            android:textSize="22sp"
-            android:buttonTint="#246B50"
-            android:textColor="#203B2E"
-
-            />
-
-        <Button
-            android:id="@+id/btnCheck"
-            style="@style/MedicineSecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:layout_marginTop="24dp"
-            android:text="检查用药信息"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/tvPreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:accessibilityLiveRegion="polite"
-            android:textSize="22sp"
-            android:textColor="#202124"
-            android:visibility="gone" />
-        <Button
-            android:id="@+id/btnSaveMedicine"
-            style="@style/MedicineSecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:layout_marginTop="20dp"
-            android:text="保存用药计划"
-            android:textSize="22sp"
-            />
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/main" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/app_background">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+      <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@drawable/ui_ic_pill" android:padding="8dp" android:contentDescription="@null" android:importantForAccessibility="no" android:focusable="false" android:clickable="false" android:background="@drawable/bg_ui_icon" />
+      <TextView android:id="@+id/tvPageTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:text="添加药品" android:textColor="@color/brand_primary_dark" android:textSize="30sp" android:textStyle="bold" android:layout_weight="1" android:layout_marginStart="12dp" />
     </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="请按照医嘱填写用药信息" android:textSize="20sp" android:textColor="@color/app_muted" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:labelFor="@id/etMedicineName" android:text="药品名称" android:textSize="22sp" android:textColor="@color/app_ink" android:drawableStart="@drawable/ui_ic_pill" android:drawablePadding="10dp" />
+    <EditText android:id="@+id/etMedicineName" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:hint="请输入药品名称" android:inputType="text" android:maxLines="1" android:textSize="22sp" android:textColor="@color/app_ink" android:textColorHint="@color/app_muted" style="@style/MedicineInput" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:labelFor="@id/etDose" android:text="每次用量" android:textSize="22sp" android:textColor="@color/app_ink" android:drawableStart="@drawable/ui_ic_dose" android:drawablePadding="10dp" />
+    <EditText android:id="@+id/etDose" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:hint="填写数量和单位，如 1 片" android:inputType="text" android:maxLines="1" android:textSize="22sp" android:textColor="@color/app_ink" android:textColorHint="@color/app_muted" style="@style/MedicineInput" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="服用备注" android:textSize="22sp" android:textColor="@color/app_ink" android:drawableStart="@drawable/ui_ic_note" android:drawablePadding="10dp" />
+    <RadioGroup android:id="@+id/rgMeal" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+      <RadioButton android:id="@+id/rbBeforeMeal" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="饭前" android:textSize="22sp" android:buttonTint="@color/brand_primary" android:textColor="@color/app_ink" android:minHeight="56dp" />
+      <RadioButton android:id="@+id/rbAfterMeal" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="饭后" android:textSize="22sp" android:buttonTint="@color/brand_primary" android:textColor="@color/app_ink" />
+      <RadioButton android:id="@+id/rbOther" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="其他／遵医嘱" android:textSize="22sp" android:buttonTint="@color/brand_primary" android:textColor="@color/app_ink" />
+    </RadioGroup>
+    <TextView android:id="@+id/tvReminderTime" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="提醒时间尚未选择" android:textSize="22sp" android:textColor="@color/app_ink" android:drawableStart="@drawable/ui_ic_clock" android:drawablePadding="10dp" />
+    <Button android:id="@+id/btnChooseTime" style="@style/MedicineSecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:layout_marginTop="8dp" android:text="选择提醒时间" android:textSize="22sp" android:drawableStart="@drawable/ui_ic_clock" android:drawablePadding="10dp" android:drawableTint="@color/brand_primary" />
+    <CheckBox android:id="@+id/cbDaily" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:layout_marginTop="16dp" android:text="每天重复提醒" android:textSize="22sp" android:buttonTint="@color/brand_primary" android:textColor="@color/app_ink" />
+    <Button android:id="@+id/btnCheck" style="@style/MedicineSecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:layout_marginTop="24dp" android:text="检查用药信息" android:textSize="22sp" android:drawableStart="@drawable/ui_ic_check" android:drawablePadding="10dp" android:drawableTint="@color/brand_primary" />
+    <TextView android:id="@+id/tvPreview" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:accessibilityLiveRegion="polite" android:textSize="22sp" android:textColor="@color/app_ink" android:visibility="gone" android:lineSpacingExtra="7dp" android:background="@drawable/bg_medicine_card" android:padding="18dp" />
+    <Button android:id="@+id/btnSaveMedicine" style="@style/MedicineSecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:layout_marginTop="20dp" android:text="保存用药计划" android:textSize="22sp" android:drawableStart="@drawable/ui_ic_check" android:drawablePadding="10dp" android:drawableTint="@color/brand_primary" />
+  </LinearLayout>
 </ScrollView>

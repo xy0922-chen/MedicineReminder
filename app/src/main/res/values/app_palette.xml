@@ -1,0 +1,35 @@
+<resources>
+  <color name="brand_primary">#2E6B46</color>
+  <color name="brand_primary_dark">#204D34</color>
+  <color name="brand_secondary">#3D7954</color>
+  <color name="brand_primary_soft">#E6F1E7</color>
+  <color name="brand_on_primary">#FFFFFF</color>
+  <color name="app_background">#F6F8FB</color>
+  <color name="app_surface">#FFFFFF</color>
+  <color name="app_surface_soft">#F0F4F8</color>
+  <color name="app_ink">#1E293B</color>
+  <color name="app_body">#475569</color>
+  <color name="app_muted">#5D6B7E</color>
+  <color name="app_border">#DEE7EE</color>
+  <color name="app_input_border">#AEBCAD</color>
+  <color name="app_disabled_bg">#E7EDF1</color>
+  <color name="app_disabled_text">#64748B</color>
+  <color name="hero_subtext">#ECF3E8</color>
+  <color name="hero_start">#3E6452</color>
+  <color name="hero_end">#557456</color>
+  <color name="chart_secondary">#718765</color>
+  <color name="chart_track">#E2E8F0</color>
+  <color name="chart_recorded">#627637</color>
+  <color name="chart_recorded_text">#50612D</color>
+  <color name="chart_pending">#B8CBA4</color>
+  <color name="chart_pending_dot">#B8CBA4</color>
+  <color name="chart_pending_text">#58694A</color>
+  <color name="warning_surface">#FFF4D8</color>
+  <color name="warning_text">#855D16</color>
+  <color name="danger_surface">#FEECEB</color>
+  <color name="danger_text">#B42318</color>
+  <color name="tip_surface">#F9F7F0</color>
+  <color name="tip_border">#EAE4D4</color>
+  <color name="primary_ripple">#202E6B46</color>
+  <color name="danger_ripple">#20B42318</color>
+</resources>

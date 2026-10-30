@@ -1,0 +1,35 @@
+<resources>
+  <string name="nav_dashboard">看板</string>
+  <string name="board_today">今天</string>
+  <string name="board_progress_title">今日记录进度</string>
+  <string name="board_loading">读取中…</string>
+  <string name="board_recorded_value">已记录 %1$d</string>
+  <string name="board_pending_value">待记录 %1$d</string>
+  <string name="board_no_plan_caption">暂无计划</string>
+  <string name="board_ratio_caption">记录比例</string>
+  <string name="board_scope">统计现有计划的今日记录，不表示实际服药次数。</string>
+  <string name="board_scope_short">按现有计划统计今日记录</string>
+  <string name="board_pending_title">待记录计划</string>
+  <string name="board_recent_title">最近记录</string>
+  <string name="board_view_all">查看全部</string>
+  <string name="board_plan_info">%1$02d:%2$02d · %3$s</string>
+  <string name="board_no_plans">还没有用药计划，添加后即可开始记录。</string>
+  <string name="board_all_recorded">现有计划今日均已记录</string>
+  <string name="board_no_recent">还没有服药记录</string>
+  <string name="board_record_details">%1$s · %2$s</string>
+  <string name="board_record_time">计划 %1$02d:%2$02d</string>
+  <string name="board_record_imported">旧版最近记录导入，信息以升级时为准</string>
+  <string name="board_record_status">已记录</string>
+  <string name="board_dashboard_title">数据看板</string>
+  <string name="board_dashboard_subtitle">用图表回顾你的记录</string>
+  <string name="board_week_title">近7天记录数量</string>
+  <string name="board_week_total">共 %1$d 条确认记录</string>
+  <string name="board_week_help">柱高为每日确认记录数，包含保留的历史。</string>
+  <string name="board_load_failed">读取失败，请重新进入页面</string>
+  <string name="board_setting_desc">提醒设置</string>
+  <string name="board_stat_plans">现有计划</string>
+  <string name="board_stat_recorded">今日已记录</string>
+  <string name="board_stat_pending">今日待记录</string>
+  <string name="board_settings_button">提醒设置</string>
+  <string name="board_open_plans">查看药物</string>
+</resources>

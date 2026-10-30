@@ -1,0 +1,30 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/pageDashboard" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone" android:fillViewport="true">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_dashboard_title" android:textSize="30sp" android:textColor="@color/brand_primary_dark" android:textStyle="bold" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_dashboard_subtitle" android:textSize="18sp" android:textColor="@color/app_muted" android:layout_marginTop="6dp" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_loading" android:textSize="17sp" android:textColor="@color/app_muted" android:id="@+id/tvBoardDate" android:layout_marginTop="16dp" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_board_card" android:padding="18dp" android:layout_marginTop="16dp">
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_progress_title" android:textSize="22sp" android:textColor="@color/app_ink" android:textStyle="bold" />
+      <FrameLayout android:layout_width="180dp" android:layout_height="180dp" android:layout_gravity="center_horizontal">
+        <com.example.medicinereminder.MedicationRingView android:id="@+id/boardRing" android:layout_width="match_parent" android:layout_height="match_parent" android:importantForAccessibility="no" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="32sp" android:textColor="@color/brand_primary_dark" android:id="@+id/tvBoardPercent" android:gravity="center" android:textStyle="bold" />
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_no_plan_caption" android:textSize="16sp" android:textColor="@color/app_muted" android:id="@+id/tvBoardChartCaption" android:gravity="center" />
+        </LinearLayout>
+      </FrameLayout>
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="14dp" android:baselineAligned="false">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/board_loading" android:textSize="18sp" android:textColor="@color/chart_recorded_text" android:id="@+id/tvBoardRecordedLegend" android:layout_weight="1" android:gravity="center" android:drawableStart="@drawable/board_dot_green" android:drawablePadding="6dp" android:textStyle="bold" />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/board_loading" android:textSize="18sp" android:textColor="@color/chart_pending_text" android:id="@+id/tvBoardPendingLegend" android:layout_weight="1" android:gravity="center" android:drawableStart="@drawable/board_dot_gold" android:drawablePadding="6dp" android:textStyle="bold" />
+      </LinearLayout>
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_scope" android:textSize="16sp" android:textColor="@color/app_muted" android:id="@+id/tvDashboardMessage" android:layout_marginTop="16dp" android:lineSpacingExtra="4dp" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_board_card" android:padding="18dp" android:layout_marginTop="16dp">
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_week_title" android:textSize="22sp" android:textColor="@color/app_ink" android:textStyle="bold" />
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_loading" android:textSize="22sp" android:textColor="@color/brand_primary" android:id="@+id/tvWeekTotal" android:layout_marginTop="10dp" android:textStyle="bold" />
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" android:textSize="16sp" android:textColor="@color/app_muted" android:id="@+id/tvWeekRange" android:layout_marginTop="6dp" />
+      <com.example.medicinereminder.HistoryBarChartView android:id="@+id/weekBarChart" android:layout_width="match_parent" android:layout_height="220dp" android:layout_marginTop="16dp" />
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/board_week_help" android:textSize="16sp" android:textColor="@color/app_muted" android:layout_marginTop="12dp" android:lineSpacingExtra="4dp" />
+    </LinearLayout>
+    <Button android:id="@+id/btnBoardHistory" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/history_title" android:layout_marginTop="18dp" style="@style/MedicineSecondaryButton" />
+  </LinearLayout>
+</ScrollView>

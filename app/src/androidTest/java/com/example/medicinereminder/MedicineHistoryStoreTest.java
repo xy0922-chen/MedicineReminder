@@ -83,4 +83,24 @@ public class MedicineHistoryStoreTest {
         assertEquals(0, MedicineHistoryStore.undoToday(db, 1, day(30)));
         assertEquals(1, count());
     }
+    @Test public void emptyHistoryDoesNotInventDashboardEvents() {
+        DashboardData data = DashboardData.read(db, day(30));
+        assertArrayEquals(new int[]{1, 0, 1}, data.overview);
+        assertArrayEquals(new int[7], data.week);
+        assertTrue(data.recent.isEmpty());
+        assertEquals("2026-10-24", data.days.get(0));
+        assertEquals("2026-10-30", data.days.get(6));
+    }
+    @Test public void weeklyChartIncludesRetainedHistoryButOverviewOnlyCurrentPlans() {
+        MedicineHistoryStore.mark(db, 1, day(23)); // 范围之外
+        MedicineHistoryStore.mark(db, 1, day(29));
+        MedicineHistoryStore.mark(db, 1, day(30));
+        db.delete("medicine", "_id=1", null);
+        DashboardData data = DashboardData.read(db, day(30));
+        assertArrayEquals(new int[]{0, 0, 0}, data.overview);
+        assertArrayEquals(new int[]{0, 0, 0, 0, 0, 1, 1}, data.week);
+        assertEquals(3, data.recent.size());
+        assertEquals("原药名", data.recent.get(0).name);
+        assertTrue(HistoryRecordAdapter.read(db, 1, day(30), 200).size() == 1);
+    }
 }

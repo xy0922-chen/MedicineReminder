@@ -74,6 +74,12 @@ public class ReminderSettingsActivity extends AppCompatActivity {
         });
         disable.setOnClickListener(v -> change(false));
         findViewById(R.id.btnReminderBack).setOnClickListener(v -> finish());
+        findViewById(R.id.btnReminderHelp).setOnClickListener(v ->
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle(R.string.reminder_help_title)
+                        .setMessage(R.string.reminder_help_details)
+                        .setPositiveButton(R.string.reminder_help_close, null)
+                        .show());
     }
 
     private void openSettings(Intent intent) {

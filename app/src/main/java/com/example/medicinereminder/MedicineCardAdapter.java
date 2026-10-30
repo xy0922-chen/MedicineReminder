@@ -87,7 +87,7 @@ final class MedicineCardAdapter extends ArrayAdapter<String> {
         boolean taken = MedicineDbHelper.isTakenToday(card.lastTaken);
         holder.status.setText(MedicineDbHelper.getTakenStatus(card.lastTaken));
         holder.status.setBackgroundResource(taken ? R.drawable.bg_status_green : R.drawable.bg_status_neutral);
-        holder.status.setTextColor(android.graphics.Color.parseColor(taken ? "#174D39" : "#56665D"));
+        holder.status.setTextColor(getContext().getColor(taken ? R.color.brand_primary_dark : R.color.app_muted));
         holder.reminder.setText(reminders == null ? getContext().getString(R.string.reminder_summary_unavailable)
                 : reminders.planText(getContext(), card.id, card.daily));
         return reusable;

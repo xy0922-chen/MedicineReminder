@@ -1,8 +1,10 @@
 <com.google.android.material.bottomnavigation.BottomNavigationView
 xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
 android:id="@+id/bottomNavigation" android:layout_width="match_parent" android:layout_height="wrap_content"
-android:minHeight="80dp" android:background="#FFFFFF" android:elevation="8dp"
+android:minHeight="72dp" android:background="#FFFFFF" android:elevation="8dp"
 app:menu="@menu/menu_bottom_navigation" app:labelVisibilityMode="labeled" app:itemHorizontalTranslationEnabled="false"
-app:itemIconSize="26dp" app:itemIconTint="@color/navigation_item_color" app:itemTextColor="@color/navigation_item_color"
+app:itemIconSize="24dp" app:itemIconTint="@color/navigation_item_color" app:itemTextColor="@color/navigation_item_color"
+app:itemPaddingTop="6dp" app:itemPaddingBottom="6dp" app:activeIndicatorLabelPadding="6dp"
+app:itemActiveIndicatorStyle="@style/MedicineNavigationIndicator"
 app:itemTextAppearanceActive="@style/MedicineNavigationLabel" app:itemTextAppearanceInactive="@style/MedicineNavigationLabel"
-app:itemRippleColor="#DDEEE4" />
+app:itemRippleColor="@color/brand_primary_soft" />

@@ -6,5 +6,5 @@
     android:padding="18dp"
     android:background="@drawable/bg_medicine_card"
     android:textSize="21sp"
-    android:textColor="#203B2E"
+    android:textColor="@color/app_ink"
     android:lineSpacingExtra="6dp" />
