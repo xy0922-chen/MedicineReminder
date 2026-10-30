@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> medicineList=new ArrayList<>();//存放多多条药品文字
     private ArrayAdapter<String> medicineAdapter;//将集合上的数据转换成列表条目
     private MedicineDbHelper dbHelper;
+    private TextView tvTodayOverview;
 
     private final ExecutorService databaseExecutor =
             Executors.newSingleThreadExecutor();
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Long> savedIds = new ArrayList<>();
 
                 ArrayList<String> savedList = dbHelper.getAllMedicines(savedIds);
+                int[] overview = dbHelper.getTodayOverview();
 
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) {
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
                                     + "，编号数量=" + medicineIds.size()
                     );
                     medicineAdapter.notifyDataSetChanged();
+                    tvTodayOverview.setText(getString(R.string.overview_counts,
+                            overview[0], overview[1], overview[2]));
                 });
 
             } catch (Exception e) {
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
+                    tvTodayOverview.setText(R.string.overview_error);
                     Toast.makeText(
                             MainActivity.this,
                             "读取药品失败",
@@ -80,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         dbHelper=new MedicineDbHelper(this);//初始化一次
+        tvTodayOverview = findViewById(R.id.tvTodayOverview);
+        findViewById(R.id.btnHistory).setOnClickListener(v ->
+                startActivity(new Intent(this, MedicineHistoryActivity.class)));
         findViewById(R.id.btnReminderSettings).setOnClickListener(v ->
                 startActivity(new Intent(this, ReminderSettingsActivity.class)));
         Button btnAddMedicine =findViewById(R.id.btnAddMedicine);
@@ -184,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Long> savedIds=new ArrayList<>();
                 ArrayList<String> savedList =
                         dbHelper.getAllMedicines(savedIds);
+                int[] overview = dbHelper.getTodayOverview();
 
                 // 第三步：回到主线程更新首页。
                 runOnUiThread(() -> {
@@ -198,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
                     medicineIds.addAll(savedIds);
 
                     medicineAdapter.notifyDataSetChanged();
+                    tvTodayOverview.setText(getString(R.string.overview_counts,
+                            overview[0], overview[1], overview[2]));
 
                     Toast.makeText(
                             MainActivity.this,

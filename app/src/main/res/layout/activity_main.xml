@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="我的健康小助手"
+                android:text="@string/overview_title"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="#203B2E" />
@@ -48,9 +48,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="记录药品、用量和计划时间，方便随时查看。"
+                android:id="@+id/tvTodayOverview"
+                android:text="@string/overview_loading"
                 android:textSize="18sp"
                 android:lineSpacingExtra="4dp"
+                android:textColor="#52685A" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/overview_help"
+                android:textSize="14sp"
                 android:textColor="#52685A" />
 
             <Button
@@ -63,13 +72,29 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnReminderSettings"
-            style="@style/MedicineSecondaryButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/reminder_settings_title" />
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+            <Button
+                android:id="@+id/btnReminderSettings"
+                style="@style/MedicineSecondaryButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/reminder_settings_title" />
+            <Button
+                android:id="@+id/btnHistory"
+                style="@style/MedicineSecondaryButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="18sp"
+                android:text="@string/history_title" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
