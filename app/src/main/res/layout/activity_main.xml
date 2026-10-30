@@ -1,141 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F1F7F3">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="安心用药"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="#174D39" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="用药有计划，生活更安心"
-            android:textSize="18sp"
-            android:textColor="#52685A" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:padding="18dp"
-            android:background="@drawable/bg_medicine_card">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/overview_title"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="#203B2E" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:id="@+id/tvTodayOverview"
-                android:text="@string/overview_loading"
-                android:textSize="18sp"
-                android:lineSpacingExtra="4dp"
-                android:textColor="#52685A" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/overview_help"
-                android:textSize="14sp"
-                android:textColor="#52685A" />
-
-            <Button
-                android:id="@+id/btnAddMedicine"
-                style="@style/MedicinePrimaryButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="＋ 添加用药计划" />
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/main" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F3F7F4">
+  <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+    <ScrollView android:id="@+id/pageHome" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_brand" android:textSize="32sp" android:textColor="#174D39" android:textStyle="bold" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_subtitle" android:textSize="18sp" android:textColor="#66756D" android:layout_marginTop="4dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="24dp" android:padding="22dp" android:background="@drawable/bg_home_hero">
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_hero_title" android:textSize="24sp" android:textColor="#FFFFFF" android:textStyle="bold" />
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_hero_body" android:textSize="18sp" android:textColor="#E5F3E9" android:layout_marginTop="12dp" android:lineSpacingExtra="5dp" />
+          <Button android:id="@+id/btnOpenMedicines" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_open_medicines" android:layout_marginTop="16dp" style="@style/MedicineSecondaryButton" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-            <Button
-                android:id="@+id/btnReminderSettings"
-                style="@style/MedicineSecondaryButton"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/reminder_settings_title" />
-            <Button
-                android:id="@+id/btnHistory"
-                style="@style/MedicineSecondaryButton"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textSize="18sp"
-                android:text="@string/history_title" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="18dp" android:padding="20dp" android:background="@drawable/bg_medicine_card">
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/overview_title" android:textSize="22sp" android:textColor="#203B2E" android:textStyle="bold" />
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/overview_loading" android:textSize="21sp" android:textColor="#246B50" android:id="@+id/tvTodayOverview" android:layout_marginTop="12dp" android:lineSpacingExtra="7dp" android:accessibilityLiveRegion="polite" />
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/overview_help" android:textSize="16sp" android:textColor="#66756D" android:layout_marginTop="10dp" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="我的用药计划"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#203B2E" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="点击计划，可查看、修改或删除"
-            android:textSize="18sp"
-            android:textColor="#52685A" />
-
-        <TextView
-            android:id="@+id/tvEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:padding="24dp"
-            android:gravity="center"
-            android:background="@drawable/bg_medicine_card"
-            android:text="还没有用药计划\n点击上方按钮，添加第一条计划"
-            android:textSize="20sp"
-            android:lineSpacingExtra="8dp"
-            android:textColor="#52685A" />
-
-        <ListView
-            android:id="@+id/lvMedicine"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="16dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="12dp"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp" />
-
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_quick_title" android:textSize="23sp" android:textColor="#203B2E" android:layout_marginTop="24dp" android:textStyle="bold" />
+        <Button android:id="@+id/btnHomeAddMedicine" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_add_plan" android:layout_marginTop="10dp" style="@style/MedicinePrimaryButton" />
+        <Button android:id="@+id/btnReminderSettings" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/reminder_settings_title" style="@style/MedicineSecondaryButton" />
+        <Button android:id="@+id/btnHistory" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/history_title" style="@style/MedicineSecondaryButton" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_tip_title" android:textSize="20sp" android:textColor="#203B2E" android:layout_marginTop="22dp" android:textStyle="bold" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_tip_body" android:textSize="18sp" android:textColor="#66756D" android:layout_marginTop="8dp" android:layout_marginBottom="12dp" android:lineSpacingExtra="4dp" />
+      </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:id="@+id/pageMedicines" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="20dp" android:visibility="gone">
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/medicine_page_title" android:textSize="30sp" android:textColor="#174D39" android:textStyle="bold" />
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/medicine_page_subtitle" android:textSize="18sp" android:textColor="#66756D" android:layout_marginTop="4dp" />
+      <Button android:id="@+id/btnAddMedicine" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_add_plan" android:layout_marginTop="18dp" style="@style/MedicinePrimaryButton" />
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/medicine_page_hint" android:textSize="17sp" android:textColor="#66756D" android:layout_marginTop="8dp" />
+      <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="16dp">
+        <ListView android:id="@+id/lvMedicine" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="@android:color/transparent" android:dividerHeight="12dp" android:clipToPadding="false" android:paddingBottom="12dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/medicine_empty_body" android:textSize="20sp" android:textColor="#66756D" android:id="@+id/tvEmpty" android:background="@drawable/bg_medicine_card" android:padding="24dp" android:gravity="center" android:lineSpacingExtra="6dp" />
+      </FrameLayout>
     </LinearLayout>
+  </FrameLayout>
+  <include layout="@layout/view_bottom_navigation" />
 </LinearLayout>

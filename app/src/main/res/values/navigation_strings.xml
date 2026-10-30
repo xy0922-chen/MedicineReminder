@@ -1,0 +1,20 @@
+<resources>
+  <string name="nav_home">首页</string>
+  <string name="nav_medicines">药物</string>
+  <string name="nav_records">记录</string>
+  <string name="home_brand">安心用药</string>
+  <string name="home_subtitle">把每一天的用药，安排得更从容</string>
+  <string name="home_hero_title">照顾健康，从一份计划开始</string>
+  <string name="home_hero_body">查看用药安排，及时确认服药，留下每一天的记录。</string>
+  <string name="home_open_medicines">查看我的药物</string>
+  <string name="home_quick_title">常用功能</string>
+  <string name="home_add_plan">＋ 添加用药计划</string>
+  <string name="home_tip_title">安心小提示</string>
+  <string name="home_tip_body">请按照医嘱核对药品与用量。服药后及时记录，误点时可在详情页撤销今日记录。</string>
+  <string name="medicine_page_title">我的药物</string>
+  <string name="medicine_page_subtitle">集中管理用药计划</string>
+  <string name="medicine_page_hint">点击药品卡片，查看详情、确认服药或修改计划</string>
+  <string name="medicine_empty_body">还没有用药计划
+点击上方按钮，添加第一条计划。</string>
+  <string name="records_page_subtitle">每一次确认，都有迹可循</string>
+</resources>

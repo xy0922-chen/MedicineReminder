@@ -1,6 +1,9 @@
 package com.example.medicinereminder;
 
 import android.content.Intent;
+import android.view.View;
+import androidx.activity.OnBackPressedCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> medicineAdapter;//将集合上的数据转换成列表条目
     private MedicineDbHelper dbHelper;
     private TextView tvTodayOverview;
+    private BottomNavigationView bottomNavigation;
+    private int selectedTab = R.id.navHome;
+    private OnBackPressedCallback tabBackCallback;
 
     private final ExecutorService databaseExecutor =
             Executors.newSingleThreadExecutor();
@@ -157,6 +163,55 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
         );
+        setupBottomNavigation(savedInstanceState);
+    }
+
+    // 以下只调整页面显示和导航；原有列表、保存和数据回传方法不变。
+    private void setupBottomNavigation(Bundle savedState) {
+        bottomNavigation = findViewById(R.id.bottomNavigation);
+        MedicineBottomNavigation.style(bottomNavigation);
+        tabBackCallback = new OnBackPressedCallback(false) {
+            @Override public void handleOnBackPressed() {
+                bottomNavigation.setSelectedItemId(R.id.navHome);
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, tabBackCallback);
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.navRecords) {
+                startActivity(new Intent(this, MedicineHistoryActivity.class));
+                // 历史页有自己的导航，返回此页时恢复先前的首页/药物选项。
+                return false;
+            }
+            showMainTab(item.getItemId());
+            return true;
+        });
+        int tab = savedState == null
+                ? getIntent().getIntExtra(MedicineBottomNavigation.EXTRA_TAB, R.id.navHome)
+                : savedState.getInt(MedicineBottomNavigation.EXTRA_TAB, R.id.navHome);
+        bottomNavigation.setSelectedItemId(tab == R.id.navMedicines ? R.id.navMedicines : R.id.navHome);
+        findViewById(R.id.btnOpenMedicines).setOnClickListener(v ->
+                bottomNavigation.setSelectedItemId(R.id.navMedicines));
+        findViewById(R.id.btnHomeAddMedicine).setOnClickListener(v ->
+                findViewById(R.id.btnAddMedicine).performClick());
+    }
+
+    private void showMainTab(int tab) {
+        selectedTab = tab == R.id.navMedicines ? R.id.navMedicines : R.id.navHome;
+        findViewById(R.id.pageHome).setVisibility(selectedTab == R.id.navHome ? View.VISIBLE : View.GONE);
+        findViewById(R.id.pageMedicines).setVisibility(selectedTab == R.id.navMedicines ? View.VISIBLE : View.GONE);
+        tabBackCallback.setEnabled(selectedTab != R.id.navHome);
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        int tab = intent.getIntExtra(MedicineBottomNavigation.EXTRA_TAB, R.id.navHome);
+        bottomNavigation.setSelectedItemId(tab == R.id.navMedicines ? R.id.navMedicines : R.id.navHome);
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(MedicineBottomNavigation.EXTRA_TAB, selectedTab);
     }
 
   /*  protected void onSaveInstanceState(Bundle outState) {
